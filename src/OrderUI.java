@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 class OrderUI {
     private String customerName;
@@ -14,11 +16,12 @@ class OrderUI {
     private String invoiceDate;
     private String bankName;
     private String accountNumber;
+    private String total;
 
     // Constructor
     public OrderUI(String customerName, String customerAddress, String itemDescription,
-                    int quantity, double pricePerItem, 
-                   String invoiceDate, String bankName, String accountNumber) {
+                   int quantity, double pricePerItem, 
+                   String invoiceDate, String bankName, String accountNumber, String total) {
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.itemDescription = itemDescription;
@@ -27,6 +30,7 @@ class OrderUI {
         this.invoiceDate = invoiceDate;
         this.bankName = bankName;
         this.accountNumber = accountNumber;
+        this.total = total;
     }
 
     // Method to calculate total amount
@@ -67,31 +71,35 @@ class OrderUI {
         }
     }
     
-
     @Override
     public String toString() {
+        // Ensure price is formatted to two decimal places
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+        String formattedPrice = currencyFormat.format(pricePerItem);
         return customerName + "," + customerAddress + "," + itemDescription + "," +
-                quantity + "," + pricePerItem + "," + 
-               calculateTotal() + "," + invoiceDate + "," + bankName + "," + accountNumber;
+                quantity + "," + formattedPrice + "," + invoiceDate + "," +
+                bankName + "," + accountNumber + "," + total;
     }
+   
 
     // Main method to test OrderUI class
     public static void main(String[] args) {
         JFrame frame = new JFrame("Create Order Invoice");
-        frame.setSize(500, 500);
+        frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(10, 2));
-
+        
         // Create text fields
         JTextField nameField = new JTextField();
         JTextField addressField = new JTextField();
         JTextField itemField = new JTextField();
         JTextField quantityField = new JTextField();
-        JTextField priceField = new JTextField();
+        JTextField priceField = new JTextField("0.00"); // default value
         JTextField dateField = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         JTextField bankField = new JTextField();
         JTextField accountField = new JTextField();
         JTextField totalField = new JTextField();
+        totalField.setEditable(false); // make total field non-editable
 
         // Create Save and Cancel button
         JButton saveButton = new JButton("Save Invoice");
@@ -112,13 +120,13 @@ class OrderUI {
                 String date = dateField.getText();
                 String bank = bankField.getText();
                 String account = accountField.getText();
+                String total = totalField.getText();
 
-                OrderUI order = new OrderUI(name, address, item, quantity, price, date, bank, account);
+                OrderUI order = new OrderUI(name, address, item, quantity, price, date, bank, account, total);
                 order.saveInvoiceData();
 
                 // Clear fields after saving
-                JTextField[] textFields = { nameField, addressField, itemField, quantityField, priceField, dateField, bankField, accountField };
-                
+                JTextField[] textFields = { nameField, addressField, itemField, quantityField, priceField, dateField, bankField, accountField, totalField };
                 clearFields(textFields);
             }
         });
@@ -183,7 +191,8 @@ class OrderUI {
             int quantity = Integer.parseInt(quantityField.getText());
             double price = Double.parseDouble(priceField.getText());
             double total = quantity * price;
-            totalField.setText(String.valueOf(total));
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+            totalField.setText(currencyFormat.format(total)); // Format total as currency
         } catch (NumberFormatException e) {
             totalField.setText("Invalid input");
         }
@@ -194,7 +203,5 @@ class OrderUI {
         for (JTextField field : fields) {
             field.setText("");
         }
-        
     }
-
 }
