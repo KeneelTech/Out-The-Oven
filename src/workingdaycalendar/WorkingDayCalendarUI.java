@@ -22,15 +22,15 @@ public class WorkingDayCalendarUI {
 
     // method use to create the layout and design for the ui
     private void setupUI() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 800);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
         JPanel navPanel = new JPanel();
         JButton prevMonthButton = new JButton("Previous Month");
-        prevMonthButton.addActionListener(e -> changeMonth(-1));
+        prevMonthButton.addActionListener(e -> nextMonth(-1));
         JButton nextMonthButton = new JButton("Next Month");
-        nextMonthButton.addActionListener(e -> changeMonth(1));
+        nextMonthButton.addActionListener(e -> nextMonth(1));
 
         navPanel.add(prevMonthButton);
         navPanel.add(nextMonthButton);
@@ -43,8 +43,7 @@ public class WorkingDayCalendarUI {
         titlePanel.add(navPanel, BorderLayout.WEST);
         titlePanel.add(monthYearLabel, BorderLayout.CENTER);
 
-        calendarPanel.setLayout(new GridLayout(6, 7)); // 6 rows, 7 columns (for full month view)
-        populateCalendar();
+        calendarPanel.setLayout(new GridLayout(6, 7));
 
         JButton confirmButton = new JButton("Confirm Working Days");
         confirmButton.addActionListener(e -> {
@@ -56,27 +55,32 @@ public class WorkingDayCalendarUI {
         actionPanel.add(confirmButton);
 
         frame.add(titlePanel, BorderLayout.NORTH);
-        frame.add(calendarPanel, BorderLayout.CENTER);
         frame.add(actionPanel, BorderLayout.LINE_START);
         frame.add(statusLabel, BorderLayout.PAGE_END);
+        frame.add(calendarPanel, BorderLayout.CENTER);
 
+        createTheCalendarView();
         frame.setVisible(true);
     }
 
+    //This method is what  brings up the name of the month and year when
+    // uer clicks to go forward or back a month
     private void updateMonthYearLabel() {
         String monthYearText = currentDate.getMonth().name() + " " + currentDate.getYear();
         monthYearLabel.setText(monthYearText);
     }
 
-    private void changeMonth(int monthOffset) {
+    //This method changes the value in the current date so that the accurate month is what is shown
+    //when user clicks next month button
+    private void nextMonth(int monthOffset) {
         currentDate = currentDate.plusMonths(monthOffset);
         updateMonthYearLabel();
-        populateCalendar();
+        createTheCalendarView();
     }
 
 
 //method to create the calendar view, uses for loop to decide the days of the month shown on the ui
-    private void populateCalendar() {
+    private void createTheCalendarView() {
         calendarPanel.removeAll();
         LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
         LocalDate lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
