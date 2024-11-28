@@ -40,25 +40,25 @@ public class EmailReminder {
     
     public static void main(String[] args) {
         
-        for (Customer customer : invoices.txt) {
-            String toEmail = customer.getEmail();
+        for (User User : invoices.txt) {
+            String toEmail = User.getEmail();
             String subject = "Order Reminder";
-            if customer.getDate()== LocalDate.now().plusDays(2){
-                String body = "Dear " + customer.getName() + ",\n\n"
+            if User.getDate()== LocalDate.now().plusDays(2){
+                String body = "Dear " + User.getName() + ",\n\n"
                         + "This is a reminder about your recent order. "
                         + "Your order is to be delivered in 2 days.\n\n"
                         + "Thank you for ordering with us!\n"
                         +"Out the Oven!\n";
             }
-            if customer.getDate()== LocalDate.now().plusDays(1){
-                String body = "Dear " + customer.getName() + ",\n\n"
+            if User.getDate()== LocalDate.now().plusDays(1){
+                String body = "Dear " + User.getName() + ",\n\n"
                         + "This is a reminder about your recent order. "
                         + "Your order is to be delivered tomorrow.\n\n"
                         + "Thank you for ordering with us!\n"
                         +"Out the Oven!\n";
             }
-            if customer.getDate()== LocalDate.now(){
-                String body = "Dear " + customer.getName() + ",\n\n"
+            if User.getDate()== LocalDate.now(){
+                String body = "Dear " + User.getName() + ",\n\n"
                         + "This is a reminder about your recent order. "
                         + "Your order will be delivered today.\n\n"
                         + "Thank you for ordering with us!\n"
