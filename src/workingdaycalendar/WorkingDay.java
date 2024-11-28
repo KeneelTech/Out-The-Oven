@@ -1,16 +1,16 @@
 package workingdaycalendar;
 
+
+//This is just the working day class to make it easier to retrieve data from db
 public class WorkingDay {
     private final String date;
     private final String note;
 
-    // Constructor
     public WorkingDay(String date, String note) {
         this.date = date;
         this.note = note;
     }
 
-    // Getters
     public String getDate() {
         return date;
     }
@@ -19,11 +19,4 @@ public class WorkingDay {
         return note;
     }
 
-    @Override
-    public String toString() {
-        return "WorkingDay{" +
-                "date=" + date +
-                ", note='" + note + '\'' +
-                '}';
-    }
 }

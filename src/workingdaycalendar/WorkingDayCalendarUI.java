@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class WorkingDayUI {
+public class WorkingDayCalendarUI {
     private final WorkingDayCalendar manager = new WorkingDayCalendar();
     private final JFrame frame = new JFrame("Working Days Calendar");
     private final JPanel calendarPanel = new JPanel();
@@ -16,17 +16,16 @@ public class WorkingDayUI {
     private JButton selectedButton = null;
     private LocalDate currentDate = LocalDate.now();
 
-    public WorkingDayUI() {
+    public WorkingDayCalendarUI() {
         setupUI();
     }
 
-    // Setup the UI components
+    // method use to create the layout and design for the ui
     private void setupUI() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 800);
         frame.setLayout(new BorderLayout());
 
-        // Panel for navigation
         JPanel navPanel = new JPanel();
         JButton prevMonthButton = new JButton("Previous Month");
         prevMonthButton.addActionListener(e -> changeMonth(-1));
@@ -36,7 +35,6 @@ public class WorkingDayUI {
         navPanel.add(prevMonthButton);
         navPanel.add(nextMonthButton);
 
-        // Month-Year label
         monthYearLabel.setFont(new Font("Arial", Font.BOLD, 16));
         updateMonthYearLabel();
 
@@ -45,11 +43,9 @@ public class WorkingDayUI {
         titlePanel.add(navPanel, BorderLayout.WEST);
         titlePanel.add(monthYearLabel, BorderLayout.CENTER);
 
-        // Calendar grid panel
         calendarPanel.setLayout(new GridLayout(6, 7)); // 6 rows, 7 columns (for full month view)
         populateCalendar();
 
-        // Action buttons
         JButton confirmButton = new JButton("Confirm Working Days");
         confirmButton.addActionListener(e -> {
             new ConfirmedDaysUI(manager).displayUI();
@@ -59,7 +55,6 @@ public class WorkingDayUI {
         JPanel actionPanel = new JPanel();
         actionPanel.add(confirmButton);
 
-        // Add components to frame
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(calendarPanel, BorderLayout.CENTER);
         frame.add(actionPanel, BorderLayout.LINE_START);
@@ -68,29 +63,27 @@ public class WorkingDayUI {
         frame.setVisible(true);
     }
 
-    // Update the month and year label
     private void updateMonthYearLabel() {
         String monthYearText = currentDate.getMonth().name() + " " + currentDate.getYear();
         monthYearLabel.setText(monthYearText);
     }
 
-    // Change month when navigating
     private void changeMonth(int monthOffset) {
         currentDate = currentDate.plusMonths(monthOffset);
         updateMonthYearLabel();
         populateCalendar();
     }
 
-    // Populate the calendar with the correct days for the current month
+
+//method to create the calendar view, uses for loop to decide the days of the month shown on the ui
     private void populateCalendar() {
-        calendarPanel.removeAll(); // Clear existing calendar
+        calendarPanel.removeAll();
         LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
         LocalDate lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
         DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd");
 
-        // Fill the calendar with buttons for each day
         for (int i = 1; i <= firstDayOfMonth.getDayOfWeek().getValue() - 1; i++) {
-            calendarPanel.add(new JLabel("")); // Empty spaces for previous month days
+            calendarPanel.add(new JLabel(""));
         }
 
         for (int day = 1; day <= lastDayOfMonth.getDayOfMonth(); day++) {
@@ -101,16 +94,16 @@ public class WorkingDayUI {
             calendarPanel.add(dayButton);
         }
 
-        // Fill the rest of the grid with empty labels if necessary
         for (int i = lastDayOfMonth.getDayOfWeek().getValue(); i < 7; i++) {
-            calendarPanel.add(new JLabel("")); // Empty spaces for next month days
+            calendarPanel.add(new JLabel(""));
         }
 
         calendarPanel.revalidate();
         calendarPanel.repaint();
     }
 
-    // Day button listener
+
+    //button listen class for when a day on the calendar ui is clicked
     private class DayButtonListener implements ActionListener {
         private final LocalDate date;
 
@@ -147,6 +140,8 @@ public class WorkingDayUI {
         }
     }
 
+
+    //Uses the swing library to bring up the ui
     public void displayUI() {
         SwingUtilities.invokeLater(() -> frame.setVisible(true));
     }
