@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.util.regex.*;
 
@@ -47,35 +48,212 @@ class User {
                inspirationalPhoto + "|" + deliveryDate + "|" + isDelivery + "|" + allergies;
     }
 
-    // Method to validate email format
-    public static boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(email).matches();
-    }
+    // Main method to test User class
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Add New Customer");
+        frame.setSize(600, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new GridLayout(11, 2));
 
-    // Method to clear input fields and uncheck checkboxes
-    public static void clearFields(JTextField[] fields, JCheckBox[] checkboxes) {
-        for (JTextField field : fields) {
-            field.setText("");
-        }
-        for (JCheckBox checkbox : checkboxes) {
-            checkbox.setSelected(false);
-        }
-    }
+        // Create text fields and checkboxes
+        JTextField nameField = new JTextField();
+        JTextField contactField = new JTextField("+1 ");
+        JTextField emailField = new JTextField();
+        JTextField productField = new JTextField();
+        JTextField quantityField = new JTextField();
+        JTextField photoField = new JTextField();
+        JTextField dateField = new JTextField();
+        JTextField addressField = new JTextField();
+        JTextField allergiesField = new JTextField();
+        JCheckBox deliveryCheckBox = new JCheckBox("Delivery");
+        
+        // Create buttons
+        JButton saveButton = new JButton("Save Customer");
+        JButton cancelButton = new JButton("Cancel");
+        JButton addPhotoButton = new JButton("Add Photo");
 
-    // Method to show profile screen with customer details
-    public static void showProfileScreen(User user) {
-        JFrame profileFrame = new JFrame("Customer Profile");
-        profileFrame.setSize(800, 800);
-        profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        profileFrame.setLayout(new BorderLayout());
+        // Set button colors
+        saveButton.setBackground(Color.GREEN);
+        cancelButton.setBackground(Color.RED);
+        addPhotoButton.setBackground(Color.BLUE);
+
+
+        // Add action listener to save button
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String contact = contactField.getText();
+                String email = emailField.getText();
+                String product = productField.getText();
+                String quantity = quantityField.getText();
+                String photo = photoField.getText();
+                String date = dateField.getText();
+                String address = addressField.getText();
+                boolean isDelivery = deliveryCheckBox.isSelected();
+                String allergies = allergiesField.getText();
+                
+                // Initialize a flag to check for errors
+                boolean hasErrors = false;
+
+                // Check for empty fields and display appropriate error messages
+                if (name.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter your name");
+                    hasErrors = true;
+                }
+
+                if (product.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter your product description");
+                    hasErrors = true;
+                }
+
+                if (quantity.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter product quantity");
+                    hasErrors = true;
+                }
+
+                if (date.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter your pickup/delivery date");
+                    hasErrors = true;
+                }
+
+                if (contact.length() < 4) {
+                    JOptionPane.showMessageDialog(frame, "Please enter your contact");
+                    hasErrors = true;
+                }
+                
+                if (isDelivery && address.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter your address");
+                    hasErrors = true;
+                } else {
+                    address = "N/A";
+                }
+
+                // If allergies are empty, set it to "N/A"
+                if (allergies.trim().isEmpty()) {
+                    allergies = "N/A";
+                }
+
+                // Validate email format
+                if (!isValidEmail(email)) {
+                    JOptionPane.showMessageDialog(frame, "Invalid email format.");
+                    return;
+                }
+
+                // If there are any errors, prevent saving and exit the method
+                if (hasErrors) {
+                    return; // Exit the action listener
+                }
+
+                // Create the User object and save data if no errors were found
+                User user = new User(name, address, contact, email, product, quantity, photo, date, isDelivery, allergies);
+                user.saveUserData();
+
+                // Show profile screen with customer data
+                showProfileScreen(user);
+
+                // Clear fields after saving
+                JTextField[] textFields = { nameField, contactField, emailField, productField, quantityField, photoField, dateField, addressField, allergiesField };
+                JCheckBox[] checkboxes = { deliveryCheckBox };
+                
+                clearFields(textFields, checkboxes);
+            }
+        });
+
+        // Add action listener to cancel button
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
+        // Add action listener to add photo button
+        addPhotoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Image files", "jpg", "png", "gif"));
+                int returnValue = fileChooser.showOpenDialog(null);
+        
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    photoField.setText(selectedFile.getAbsolutePath());
+
+                    // Show success message
+                    JOptionPane.showMessageDialog(null, "Photo added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Show error message if the user cancels or an error occurs
+                    JOptionPane.showMessageDialog(null, "Error: No photo selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
+        // Adding components to the frame
+        frame.add(new JLabel("Name:"));
+        frame.add(nameField);
+        frame.add(new JLabel("Address:"));
+        frame.add(addressField);
+        frame.add(new JLabel("Contact Number:"));
+        frame.add(contactField);
+        frame.add(new JLabel("Email:"));
+        frame.add(emailField);
+        frame.add(new JLabel("Product Description:"));
+        frame.add(productField);
+        frame.add(new JLabel("Quantity:"));
+        frame.add(quantityField);
+        frame.add(new JLabel("Inspirational Photo:"));
+        frame.add(addPhotoButton);
+        frame.add(new JLabel("Delivery/Pickup Date:"));
+        frame.add(dateField);
+        frame.add(new JLabel("Allergies/Additional Info:"));
+        frame.add(allergiesField);
+        frame.add(new JLabel("Tick the box for delivery"));
+        frame.add(deliveryCheckBox);
+        frame.add(saveButton);
+        frame.add(cancelButton);
+
+        // Make the frame visible
+        frame.setVisible(true);
+        
+    
+        // Set maximum lengths for fields
+        nameField.setDocument(new JTextFieldLimit(35));
+        addressField.setDocument(new JTextFieldLimit(70));
+        productField.setDocument(new JTextFieldLimit(250));
+        
+        } 
+
+        // Method to validate email format
+        private static boolean isValidEmail(String email) {
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+            Pattern pattern = Pattern.compile(emailRegex);
+            return pattern.matcher(email).matches();
+        }
+
+        // Method to clear input fields and uncheck checkboxes
+        private static void clearFields(JTextField[] fields, JCheckBox[] checkboxes) {
+            for (JTextField field : fields) {
+                field.setText("");
+            }
+            for (JCheckBox checkbox : checkboxes) {
+                checkbox.setSelected(false);
+            }
+        
+        }
+
+        // Method to show profile screen with customer details
+        private static void showProfileScreen(User user) {
+            JFrame profileFrame = new JFrame("Customer Profile");
+            profileFrame.setSize(800, 800);
+            profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            profileFrame.setLayout(new BorderLayout());
 
         // Create a JPanel for customer information
         JPanel infoPanel = new JPanel(new GridLayout(0, 2)); // Dynamic rows
 
         // Create close button
         JButton closeButton = new JButton("Close");
+
+        // Set button color
         closeButton.setBackground(Color.RED);
         closeButton.setPreferredSize(new Dimension(100, 30));
 
@@ -114,6 +292,7 @@ class User {
         if (user.inspirationalPhoto != null && !user.inspirationalPhoto.isEmpty()) {
             try {
                 ImageIcon imageIcon = new ImageIcon(user.inspirationalPhoto);
+                // Scale image to a reasonable size, adjust as necessary
                 Image scaledImage = imageIcon.getImage().getScaledInstance(400, 350, Image.SCALE_SMOOTH);
                 imageLabel.setIcon(new ImageIcon(scaledImage));
             } catch (Exception e) {
@@ -146,20 +325,22 @@ class User {
         });
     }
 
-    // Custom Document to limit JTextField input length
-    static class JTextFieldLimit extends javax.swing.text.PlainDocument {
-        private final int limit;
 
-        JTextFieldLimit(int limit) {
-            super();
-            this.limit = limit;
-        }
+        // Custom Document to limit JTextField input length
+        static class JTextFieldLimit extends javax.swing.text.PlainDocument {
+            private final int limit;
 
-        public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
-            if (str == null) return;
-            if ((getLength() + str.length()) <= limit) {
-                super.insertString(offset, str, attr);
+            JTextFieldLimit(int limit) {
+                super();
+                this.limit = limit;
+            }
+
+            public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
+                if (str == null) return;
+                if ((getLength() + str.length()) <= limit) {
+                    super.insertString(offset, str, attr);
+                }
             }
         }
-    }
+
 }
