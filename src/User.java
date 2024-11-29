@@ -50,7 +50,7 @@ class User {
 
     // Main method to test User class
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Add New Customer");
+        JFrame frame = new JFrame("Edit Customer");
         frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(11, 2));
@@ -70,7 +70,7 @@ class User {
         // Create buttons
         JButton saveButton = new JButton("Save Customer");
         JButton cancelButton = new JButton("Cancel");
-        JButton addPhotoButton = new JButton("Add Photo");
+        JButton addPhotoButton = new JButton("Change Photo");
 
         // Set button colors
         saveButton.setBackground(Color.GREEN);
@@ -80,6 +80,7 @@ class User {
 
         // Add action listener to save button
         saveButton.addActionListener(new ActionListener() {
+            //gets data from text fields
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
                 String contact = contactField.getText();
@@ -124,13 +125,11 @@ class User {
                 if (isDelivery && address.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Please enter your address");
                     hasErrors = true;
-                } else {
-                    address = "N/A";
-                }
+                } 
 
                 // If allergies are empty, set it to "N/A"
                 if (allergies.trim().isEmpty()) {
-                    allergies = "N/A";
+                    allergies = "No allergies";
                 }
 
                 // Validate email format
