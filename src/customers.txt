@@ -1,0 +1,7 @@
+Kya Evans|21 Mona Rd, Kingston|+1 876 555 9999|kyaeve@yahoo.com|Vanilla bean cupcakes with cream cheese frosting|12|C:\Users\User1\Pictures\Vanilla bean cupcakes.jpg|12/12/2024|true|Walnuts
+Zoe Wees|23 Hope Rd, Kingston|+1 876 555 2321|zoee08@gmail.com|Vanilla bean cupcakes with cream cheese forsting|1|C:\Users\User1\Pictures\Vanilla bean cupcakes.jpg|12/12/2024|true|Pecans
+Andrew Pallock|14 Lincoln Drive, Mandeville|+1 876 909 4457|pallockd@yahoo.com|Matcha cake, 2 tires, buttercream icing|1|C:\Users\User1\Pictures\Christmas cake inspo.png|11/24/2024|true|N/A
+Nakayla Royal|89 Marshalls Pen, Mandeville|+1 876 555 9054|nakayla708@gmail.com|Vanilla bean cupcakes with cream cheese frosting|24|C:\Users\User1\Pictures\Vanilla bean cupcakes.jpg|12/12/2024|true|Peanuts
+Kaliope Dew|15 Marlon Street, Mandeville|+1 876 222 3145|kalidew@yahoo.com|Red velvet cake, 2 tiers|1|C:\Users\User1\Pictures\Christmas cake inspo.png|3/01/2025|false|N/A
+Lydia Martin|31 Beacon Drive, Mandeville|+1 876 579 2210|lydiam@yahoo.com|Strawberry jelly filled donuts|12||23/12/2024|false|Shellfish
+Kira Argent|63 B Deanery Rd, Kingston|+1 876 902 4412|argentk@yahoo.com|Upside down pineapple cake|1||15/12/2024|true|Honey
