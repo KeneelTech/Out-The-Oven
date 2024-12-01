@@ -33,12 +33,61 @@ class User {
 
     // Method to save user data to a file
     public void saveUserData() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("customers.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("customers.txt", false))) {
             writer.write(this.toString());
             writer.newLine();
             JOptionPane.showMessageDialog(null, "Customer data saved successfully.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saving customer data: " + e.getMessage());
+        }
+    }
+
+    // Method to read customer data from file
+    public static void loadCustomerData(JTextField[] fields) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("customers.txt"))) {
+            String line;
+            String[] data;
+            while ((line = reader.readLine()) != null) {
+                // Split the line using the escaped pipe character
+                data = line.split("\\|");
+                // Check if the first element in data matches the name (case-insensitive)
+                fields[0].setText(data[0]);
+                fields[7].setText(data[1]);
+                fields[1].setText(data[2]);
+                fields[2].setText(data[3]);
+                fields[3].setText(data[4]);
+                fields[4].setText(data[5]);
+                fields[5].setText(data[6]);
+                fields[6].setText(data[7]);
+                fields[8].setText(data[8]);
+                
+                /* 
+                if (data[0].equalsIgnoreCase(name)) {
+                    // Populate the corresponding fields
+                    addressField.setText(data[1]);
+                    itemField.setText(data[4]);
+                    quantityField.setText(data[5]);
+                    return;
+                }*/
+            }
+
+            /* 
+            
+            nameField 
+            contactField 
+            emailField 
+            productField 
+            quantityField 
+            photoField 
+            dateField 
+            addressField 
+            allergiesField
+            */
+            //JTextField[] textFields = { nameField, contactField, emailField, productField, quantityField, photoField, dateField, addressField, allergiesField };
+            
+            //JOptionPane.showMessageDialog(null, "Customer not found.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading customer data: " + e.getMessage());
         }
     }
 
@@ -50,7 +99,7 @@ class User {
 
     // Main method to test User class
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Add New Customer");
+        JFrame frame = new JFrame("Edit Customer");
         frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(11, 2));
@@ -67,10 +116,11 @@ class User {
         JTextField allergiesField = new JTextField();
         JCheckBox deliveryCheckBox = new JCheckBox("Delivery");
         
+        
         // Create buttons
         JButton saveButton = new JButton("Save Customer");
         JButton cancelButton = new JButton("Cancel");
-        JButton addPhotoButton = new JButton("Add Photo");
+        JButton addPhotoButton = new JButton("Change Photo");
 
         // Set button colors
         saveButton.setBackground(Color.GREEN);
@@ -80,6 +130,7 @@ class User {
 
         // Add action listener to save button
         saveButton.addActionListener(new ActionListener() {
+            //gets data from text fields
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
                 String contact = contactField.getText();
@@ -124,13 +175,11 @@ class User {
                 if (isDelivery && address.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Please enter your address");
                     hasErrors = true;
-                } else {
-                    address = "N/A";
-                }
+                } 
 
                 // If allergies are empty, set it to "N/A"
                 if (allergies.trim().isEmpty()) {
-                    allergies = "N/A";
+                    allergies = "No allergies";
                 }
 
                 // Validate email format
@@ -150,12 +199,13 @@ class User {
 
                 // Show profile screen with customer data
                 showProfileScreen(user);
-
+                
                 // Clear fields after saving
                 JTextField[] textFields = { nameField, contactField, emailField, productField, quantityField, photoField, dateField, addressField, allergiesField };
                 JCheckBox[] checkboxes = { deliveryCheckBox };
                 
-                clearFields(textFields, checkboxes);
+                
+                loadCustomerData(textFields);
             }
         });
 
@@ -222,18 +272,22 @@ class User {
         
         } 
 
+
+
+
         // Method to validate email format
         private static boolean isValidEmail(String email) {
             String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
             Pattern pattern = Pattern.compile(emailRegex);
             return pattern.matcher(email).matches();
         }
-
+ 
         // Method to clear input fields and uncheck checkboxes
-        private static void clearFields(JTextField[] fields, JCheckBox[] checkboxes) {
-            for (JTextField field : fields) {
-                field.setText("");
-            }
+        private static void setFields(JTextField[] fields, JCheckBox[] checkboxes) {
+            
+            
+
+
             for (JCheckBox checkbox : checkboxes) {
                 checkbox.setSelected(false);
             }
