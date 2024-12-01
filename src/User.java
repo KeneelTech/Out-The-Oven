@@ -10,15 +10,15 @@ class User {
     private String contactNumber;
     private String email;
     private String productDescription;
-    private int quantity;
+    private String quantity;
     private String inspirationalPhoto;
-    private int deliveryDate;
+    private String deliveryDate;
     private boolean isDelivery;
     private String allergies;
 
     // Constructor
-    public User(String name, String address, String contactNumber, String email, String productDescription, int quantity,
-                String inspirationalPhoto, int deliveryDate, boolean isDelivery, String allergies) {
+    public User(String name, String address, String contactNumber, String email, String productDescription, String quantity,
+                String inspirationalPhoto, String deliveryDate, boolean isDelivery, String allergies) {
         this.name = name;
         this.address = address;
         this.contactNumber = contactNumber;
@@ -30,45 +30,7 @@ class User {
         this.isDelivery = isDelivery;
         this.allergies = allergies;
     }
-    public String getName() {
-        return name;
-    }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public String getContact() {
-        return contactNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getProduct() {
-        return productDescription;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public String getPhoto() {
-        return inspirationalPhoto;
-    }
-
-    public int getDate() {
-        return deliveryDate;
-    }
-
-    public boolean isDelivery() {
-        return isDelivery;
-    }
-
-    public String getAllergies() {
-        return allergies;
-    }
     // Method to save user data to a file
     public void saveUserData() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("customers.txt", true))) {
@@ -123,7 +85,7 @@ class User {
                 String contact = contactField.getText();
                 String email = emailField.getText();
                 String product = productField.getText();
-                var quantity = quantityField.getText();
+                String quantity = quantityField.getText();
                 String photo = photoField.getText();
                 String date = dateField.getText();
                 String address = addressField.getText();
@@ -309,7 +271,7 @@ class User {
         infoPanel.add(new JLabel("Quantity:"));
         infoPanel.add(new JLabel(String.valueOf(user.quantity))); // Ensure quantity is shown correctly as string
         infoPanel.add(new JLabel("Delivery/Pickup Date:"));
-        infoPanel.add(new JLabel(String.valueOf(user.deliveryDate)));
+        infoPanel.add(new JLabel(user.deliveryDate));
         infoPanel.add(new JLabel("Delivery:"));
         infoPanel.add(new JLabel(user.isDelivery ? "Yes" : "No"));
         infoPanel.add(new JLabel("Allergies/Additional Info:"));
