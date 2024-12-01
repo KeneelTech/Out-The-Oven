@@ -270,12 +270,22 @@ class User {
         addressField.setDocument(new JTextFieldLimit(70));
         productField.setDocument(new JTextFieldLimit(250));
         
-        } 
+        }
 
 
+    public String getProductDescription() {
+        return productDescription;
+    }
 
+    public String getname() {
+        return name;
+    }
 
-        // Method to validate email format
+    public String getdeliverydate() {
+        return deliveryDate;
+    }
+
+    // Method to validate email format
         private static boolean isValidEmail(String email) {
             String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
             Pattern pattern = Pattern.compile(emailRegex);

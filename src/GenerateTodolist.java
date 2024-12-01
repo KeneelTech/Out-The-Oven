@@ -1,18 +1,15 @@
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.io.IOException;
-import java.awt.Font;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.Comparator;
-import java.util.List;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GenerateTodolist extends JPanel{
     private JButton     cmdClose;
@@ -63,7 +60,7 @@ public class GenerateTodolist extends JPanel{
     private void addt(User i)
     { 
         String name= i.getname();
-        String[] item={name,""+ i.getdesc(),""/*+i.getinStock(),""*/+i.getdeliverydate()};
+        String[] item={name,""+ i.getProductDescription(),""/*+i.getinStock(),""*/+i.getdeliverydate()};
         model.addRow(item);        
 
     }
